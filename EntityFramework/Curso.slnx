@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/Curso/">
+    <Project Path="Curso/CursoEFCore.csproj" />
+  </Folder>
+</Solution>
