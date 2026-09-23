@@ -26,7 +26,9 @@ namespace CursoEFCore.Data
             optionsBuilder
                 .UseLoggerFactory(_logger)
                 .EnableSensitiveDataLogging()
-                .UseSqlServer("Data source=(localdb)\\mssqllocaldb;Initial Catalog=CursoEFCore;Integrated Security=true");
+                .UseSqlServer("Data source=(localdb)\\mssqllocaldb;Initial Catalog=CursoEFCore;Integrated Security=true", 
+                p=>p.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(15), errorNumbersToAdd: null)//Configuração de tentativas de conexão
+                .MigrationsHistoryTable("curso_ef_core_migrations")); //Configurando nome da tabela de Migrations
         }
 
         //Criando modelo de dados OnModelCreating()
@@ -43,6 +45,7 @@ namespace CursoEFCore.Data
             modelBuilder.ApplyConfiguration(new ProdutoConfiguration());
             */
         }
+
 
     }
 }
