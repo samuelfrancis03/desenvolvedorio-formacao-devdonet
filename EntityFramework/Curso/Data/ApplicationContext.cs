@@ -2,22 +2,31 @@
 using CursoEFCore.Domain;
 using CursoEFCore.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data
+namespace CursoEFCore.Data
 {
     internal class ApplicationContext : DbContext
     {
+        //Propiedade para ler log das operações feitas pelo o Entity FrameWork, pacote Microsoft.Extensions.Logging.Console
+        private static readonly ILoggerFactory _logger = LoggerFactory.Create(p=>p.AddConsole());
+
         //Criando modelo de dados DbSet
         public DbSet<Pedido> Pedidos { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Cliente> Client { get; set; }
 
         //Configurando a conexão com o banco
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Setando o provider que utilizaremos
-            optionsBuilder.UseSqlServer("Data source=(localdb)\\mssqllocaldb;Initial Catalog=CursoEFCore;Integrated Security=true");
+            optionsBuilder
+                .UseLoggerFactory(_logger)
+                .EnableSensitiveDataLogging()
+                .UseSqlServer("Data source=(localdb)\\mssqllocaldb;Initial Catalog=CursoEFCore;Integrated Security=true");
         }
 
         //Criando modelo de dados OnModelCreating()
